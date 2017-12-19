@@ -8,8 +8,8 @@ import java.io.File
  */
 interface SongsView : BaseView {
     fun onSuccess( songsList : ArrayList<Songs> )
-    fun onDownloadSuccess( fileUrl : String, downloadedFile : File )
-    fun showDownloadProgress( fileUrl: String )
-    fun hideDownloadProgress( fileUrl: String )
+    fun onDownloadSuccess( song: Songs, downloadedFile : File )
+    fun showDownloadProgress( song: Songs )
+    fun hideDownloadProgress( song: Songs )
     fun onSongSelect( songIndex : Int, action : String )
 }

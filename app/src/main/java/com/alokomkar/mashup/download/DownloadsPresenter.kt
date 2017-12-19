@@ -3,6 +3,7 @@ package com.alokomkar.mashup.download
 
 import android.os.Environment
 import com.alokomkar.mashup.MashUpApplication
+import com.alokomkar.mashup.songs.Songs
 import com.alokomkar.mashup.songs.SongsView
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -23,27 +24,29 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
 
     private val mCompositeDisposable : CompositeDisposable = CompositeDisposable()
 
-    fun downloadFile( fileUrl : String, fileName : String ) {
+    fun downloadFile( fileUrl : String, song : Songs ) {
+        songsView.showDownloadProgress(song)
         MashUpApplication.getDownloadFileApi()!!
                 .downloadFile(fileUrl)
-                .flatMap(processResponse(fileName))
+                .flatMap(processResponse(song))
                 .subscribeOn(Schedulers.io())
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(this)
     }
 
-    private fun processResponse(fileName: String): Function1<Response<ResponseBody>, Observable<File>> {
+    private fun processResponse(song : Songs): Function1<Response<ResponseBody>, Observable<File>> {
         return object : Function1<Response<ResponseBody>, Observable<File>> {
             override fun invoke(responseBodyResponse: Response<ResponseBody>): Observable<File> {
-                return saveToDisk(fileName, responseBodyResponse)
+                return saveToDisk(song, responseBodyResponse)
             }
         }
     }
 
-    private fun saveToDisk( fileName: String, response: Response<ResponseBody> ): Observable<File> {
+    private fun saveToDisk( song : Songs, response: Response<ResponseBody> ): Observable<File> {
         return Observable.create { emitter ->
             try {
 
+                val fileName = song.song.replace("\\s".toRegex(), "_")
                 val destinationFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absoluteFile, fileName + ".mp3");
                 val bufferedSink = Okio.buffer(Okio.sink(destinationFile))
 
@@ -61,7 +64,9 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
     }
 
     override fun onNext(t: File) {
-        songsView.hideDownloadProgress(t.nameWithoutExtension)
+        val song = Songs()
+        song.fileName = t.nameWithoutExtension
+        songsView.hideDownloadProgress(song)
     }
 
     override fun onComplete() {

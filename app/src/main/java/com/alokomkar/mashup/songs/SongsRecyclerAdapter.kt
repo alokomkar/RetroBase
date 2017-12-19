@@ -108,4 +108,15 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
         songsList[songIndex].isDownloading = true
         notifyDataSetChanged()
     }
+
+    fun showProgress(songIndex: Songs) {
+        songIndex.isDownloading = true
+        notifyDataSetChanged()
+    }
+
+    fun hideProgress(song: Songs) {
+        val songIndex = songsList.indexOf(song)
+        songsList[songIndex].isDownloading = false
+        notifyDataSetChanged()
+    }
 }

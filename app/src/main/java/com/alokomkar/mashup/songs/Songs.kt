@@ -20,7 +20,7 @@ class Songs(
         var artists: String = "",
         @SerializedName("cover_image")
         @Expose
-        var coverImage: String
+        var coverImage: String = ""
 ) : Parcelable {
     constructor(source: Parcel) : this(
             source.readString(),
@@ -31,6 +31,7 @@ class Songs(
 
     var expandedUrl : String = ""
     var isDownloading : Boolean = false
+    var fileName : String = song.replace("\\s".toRegex(), "_")
 
     override fun describeContents() = 0
 
@@ -47,13 +48,13 @@ class Songs(
 
         other as Songs
 
-        if (song != other.song) return false
+        if (fileName != other.fileName) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return song.hashCode()
+        return fileName.hashCode()
     }
 
     companion object {

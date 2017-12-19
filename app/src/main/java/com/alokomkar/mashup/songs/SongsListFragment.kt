@@ -130,6 +130,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             "download" -> {
                 if( MashUpApplication.instance.isNetworkAvailable() ) {
                     mSongsAdapter!!.showProgress(songIndex)
+                    mDownloadPresenter.downloadFile(mSongsAdapter!!.getItemAtPosition(songIndex).url, mSongsAdapter!!.getItemAtPosition(songIndex))
 
                 }
                 else
@@ -171,15 +172,15 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     }
 
-    override fun onDownloadSuccess(fileUrl: String, downloadedFile: File) {
+    override fun onDownloadSuccess(song: Songs, downloadedFile: File) {
         Toast.makeText(context, "Download complete : " + downloadedFile.absolutePath, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showDownloadProgress(fileUrl: String) {
-
+    override fun showDownloadProgress(song: Songs) {
+        mSongsAdapter!!.showProgress(song)
     }
 
-    override fun hideDownloadProgress(fileUrl: String) {
-
+    override fun hideDownloadProgress(song: Songs) {
+        mSongsAdapter!!.hideProgress(song)
     }
 }
