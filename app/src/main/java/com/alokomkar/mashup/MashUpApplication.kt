@@ -6,6 +6,9 @@ import com.alokomkar.mashup.base.CACHE_FILES_COUNT
 import com.alokomkar.mashup.base.NetModule
 import com.alokomkar.mashup.songs.SongsAPI
 import com.danikula.videocache.HttpProxyCacheServer
+import android.net.ConnectivityManager
+
+
 
 
 
@@ -32,6 +35,12 @@ class MashUpApplication : Application() {
         return HttpProxyCacheServer.Builder(this)
                 .maxCacheFilesCount(CACHE_FILES_COUNT)
                 .build()
+    }
+
+    fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
     companion object {

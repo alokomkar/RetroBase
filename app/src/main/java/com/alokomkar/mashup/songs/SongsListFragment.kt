@@ -19,22 +19,6 @@ import kotlinx.android.synthetic.main.fragment_songs_list.*
  * Created by Alok Omkar on 2017-12-16.
  */
 class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
-    override fun afterTextChanged(p0: Editable?) {
-        if( p0 != null && mSongsAdapter != null ) {
-            mSongsAdapter!!.filterList(p0.toString().trim())
-        }
-        else {
-            mSongsAdapter!!.filterList("")
-        }
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
 
     private lateinit var mSongsPresenter : SongsPresenter
 
@@ -95,7 +79,6 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     override fun showError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-        hideProgress()
     }
 
     private var mSongsList: ArrayList<Songs> ?= null
@@ -125,5 +108,22 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     override fun onDestroyView() {
         super.onDestroyView()
         mSongsPresenter.onDestroy()
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
+        if( p0 != null && mSongsAdapter != null ) {
+            mSongsAdapter!!.filterList(p0.toString().trim())
+        }
+        else {
+            mSongsAdapter!!.filterList("")
+        }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
     }
 }

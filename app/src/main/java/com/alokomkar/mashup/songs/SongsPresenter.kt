@@ -17,11 +17,17 @@ class SongsPresenter(private val songsView : SongsView) : Observer<ArrayList<Son
 
     fun getSongs() {
         songsView.showProgress("Loading")
+
+        if( !MashUpApplication.instance.isNetworkAvailable() ) {
+            songsView.showError("Offline Mode - App behaviour may change")
+        }
+
         MashUpApplication.getSongsApI()!!
                 .songs
                 .subscribeOn(Schedulers.io())
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe( this )
+
     }
 
     /**
@@ -76,6 +82,7 @@ class SongsPresenter(private val songsView : SongsView) : Observer<ArrayList<Son
      */
     override fun onError(e: Throwable) {
         songsView.showError(e.message!!)
+        songsView.hideProgress()
     }
 
     fun onDestroy() {
