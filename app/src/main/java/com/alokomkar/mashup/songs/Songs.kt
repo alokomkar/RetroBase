@@ -31,6 +31,7 @@ class Songs(
 
     var expandedUrl : String = ""
     var isDownloading : Boolean = false
+    var isDownloaded : Boolean = false
     var fileName : String = song.replace("\\s".toRegex(), "_")
 
     override fun describeContents() = 0

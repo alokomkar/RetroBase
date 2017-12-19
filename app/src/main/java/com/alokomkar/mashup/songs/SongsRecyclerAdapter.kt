@@ -43,8 +43,19 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
                 .apply(mRequestOptions)
                 .into(holder.songsImageView)
 
-        if( songs.isDownloading ) holder.downloadBar.show()
-        else holder.downloadBar.hide()
+        if( songs.isDownloading ) {
+            holder.downloadBar.show()
+            holder.downloadImageView.hide()
+        }
+        else {
+            holder.downloadBar.hide()
+            holder.downloadImageView.show()
+        }
+
+        if( songs.isDownloaded ) {
+            holder.downloadImageView.hide()
+        }
+
 
     }
 
@@ -73,19 +84,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        override fun onClick(view: View?) {
-            val position = adapterPosition
-            if( position != RecyclerView.NO_POSITION ) {
-                when( itemView.id ) {
-                    R.id.downloadImageView -> {
-                        songsView.onSongSelect(position, "download")
-                    }
-                    else -> {
-                        songsView.onSongSelect(position, "play")
-                    }
-                }
-            }
-        }
+
 
         val titleTextView : TextView = itemView.findViewById(R.id.titleTextView)
         val artistTextView : TextView = itemView.findViewById(R.id.artistTextView)
@@ -100,6 +99,20 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
             songsImageView.setOnClickListener(this)
             playImageView.setOnClickListener(this)
             downloadImageView.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+            val position = adapterPosition
+            if( position != RecyclerView.NO_POSITION ) {
+                when( view!!.id ) {
+                    R.id.downloadImageView -> {
+                        songsView.onSongSelect(position, "download")
+                    }
+                    else -> {
+                        songsView.onSongSelect(position, "play")
+                    }
+                }
+            }
         }
 
     }
@@ -117,6 +130,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     fun hideProgress(song: Songs) {
         val songIndex = songsList.indexOf(song)
         songsList[songIndex].isDownloading = false
+        songsList[songIndex].isDownloaded = true
         notifyDataSetChanged()
     }
 }

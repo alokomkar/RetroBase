@@ -66,7 +66,7 @@
             android:layout_width="@dimen/default_big_margin"
             android:layout_height="@dimen/default_big_margin"
             android:layout_margin="@dimen/default_margin"
-            android:visibility="gone"
+            android:visibility="visible"
             app:srcCompat="@drawable/ic_file_download_purple_200_36dp"
             android:id="@+id/downloadImageView"/>
 
@@ -74,7 +74,7 @@
             android:layout_width="@dimen/default_big_margin"
             android:layout_height="@dimen/default_big_margin"
             android:layout_margin="@dimen/default_margin"
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/downloadBar"
             android:padding="@dimen/default_margin" />
 
