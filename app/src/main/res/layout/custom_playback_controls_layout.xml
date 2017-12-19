@@ -18,7 +18,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layoutDirection="ltr"
-    android:background="#CC000000"
+    android:background="@color/primaryBackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,16 +29,16 @@
         android:orientation="horizontal">
 
         <ImageButton android:id="@id/exo_rew"
-            style="@style/ExoMediaButton.Rewind"/>
+            style="@style/mediaButton.Rewind"/>
 
         <ImageButton android:id="@id/exo_play"
-            style="@style/ExoMediaButton.Play"/>
+            style="@style/mediaButton.Play"/>
 
         <ImageButton android:id="@id/exo_pause"
-            style="@style/ExoMediaButton.Pause"/>
+            style="@style/mediaButton.Pause"/>
 
         <ImageButton android:id="@id/exo_ffwd"
-            style="@style/ExoMediaButton.FastForward"/>
+            style="@style/mediaButton.FastForward"/>
 
 
     </LinearLayout>
