@@ -21,6 +21,7 @@ import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.handleMultiplePermission
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
+import com.alokomkar.mashup.download.DownloadFileTask
 import com.alokomkar.mashup.download.DownloadsPresenter
 import kotlinx.android.synthetic.main.fragment_songs_list.*
 import java.io.File
@@ -146,7 +147,8 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
                     if( MashUpApplication.instance.isNetworkAvailable() ) {
                         mSongsAdapter!!.showProgress(songIndex)
-                        mDownloadPresenter.downloadFile(mSongsAdapter!!.getItemAtPosition(songIndex).url, mSongsAdapter!!.getItemAtPosition(songIndex))
+                        DownloadFileTask(context!!, this).execute(mSongsAdapter!!.getItemAtPosition(songIndex))
+                        //mDownloadPresenter.downloadFile(mSongsAdapter!!.getItemAtPosition(songIndex).url, mSongsAdapter!!.getItemAtPosition(songIndex))
 
                     }
                     else
@@ -207,6 +209,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     override fun onDownloadSuccess(song: Songs, downloadedFile: File) {
         Toast.makeText(context, "Download complete : " + downloadedFile.absolutePath, Toast.LENGTH_SHORT).show()
+        MashUpApplication.getPreferences().addDownloadedFile( song, downloadedFile )
     }
 
     override fun showDownloadProgress(song: Songs) {

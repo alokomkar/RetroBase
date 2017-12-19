@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
@@ -22,6 +23,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
 
     private lateinit var mRequestOptions: RequestOptions
     private var mFilteredList : ArrayList<Songs> = ArrayList(songsList)
+    private var mPreferences = MashUpApplication.getPreferences()
 
     @SuppressLint("CheckResult")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -52,7 +54,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
             holder.downloadImageView.show()
         }
 
-        if( songs.isDownloaded ) {
+        if( songs.isDownloaded || mPreferences.getDownloadedFile(songs).isNotEmpty() ) {
             holder.downloadImageView.hide()
         }
 
@@ -118,12 +120,12 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     }
 
     fun showProgress(songIndex: Int) {
-        songsList[songIndex].isDownloading = true
+        //songsList[songIndex].isDownloading = true
         notifyDataSetChanged()
     }
 
     fun showProgress(songIndex: Songs) {
-        songIndex.isDownloading = true
+        //songIndex.isDownloading = true
         notifyDataSetChanged()
     }
 

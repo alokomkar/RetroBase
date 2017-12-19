@@ -7,6 +7,7 @@ import com.alokomkar.mashup.base.NetModule
 import com.alokomkar.mashup.songs.SongsAPI
 import com.danikula.videocache.HttpProxyCacheServer
 import android.net.ConnectivityManager
+import com.alokomkar.mashup.base.MashUpPreferences
 import com.alokomkar.mashup.download.DownloadFileAPI
 
 
@@ -42,6 +43,12 @@ class MashUpApplication : Application() {
     }
 
     companion object {
+
+        var mashUpPreferences: MashUpPreferences? = null
+        fun getPreferences() : MashUpPreferences {
+            if( mashUpPreferences == null ) mashUpPreferences = MashUpPreferences(instance)
+            return mashUpPreferences as MashUpPreferences
+        }
 
         var songsAPI: SongsAPI?= null
         fun getSongsApI() : SongsAPI? {

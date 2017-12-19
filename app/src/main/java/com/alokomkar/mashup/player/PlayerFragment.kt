@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.base.BUNDLE_SONG
 import com.alokomkar.mashup.base.BUNDLE_SONGS_LIST
 import com.alokomkar.mashup.R
@@ -14,8 +15,6 @@ import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
 import com.alokomkar.mashup.songs.Songs
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_player.*
 
 import com.google.android.exoplayer2.DefaultLoadControl
@@ -23,10 +22,15 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.FileDataSource
+import java.io.File
+import java.net.URI
 
 
 /**
@@ -90,6 +94,24 @@ class PlayerFragment : BaseFragment(), PlayerView {
                 DefaultExtractorsFactory(), null, null)
     }
 
+    private fun initializeFromFile(uri: File) {
+        val fileDataSource  = FileDataSource()
+        fileDataSource.open(DataSpec(Uri.fromFile(uri)))
+        val factory = object : DataSource.Factory {
+            /**
+             * Creates a [DataSource] instance.
+             */
+            override fun createDataSource(): DataSource {
+                return fileDataSource
+            }
+
+        }
+        val audioSource = ExtractorMediaSource(fileDataSource.uri,
+                factory, DefaultExtractorsFactory(), null, null)
+
+        mExoPlayer?.prepare(audioSource, true, true)
+    }
+
     private var mExoPlayer: SimpleExoPlayer ?= null
     private var mPlayWhenReady: Boolean = true
     private var mCurrentWindow: Int = 0
@@ -117,7 +139,15 @@ class PlayerFragment : BaseFragment(), PlayerView {
     }
 
     private fun resolveURL() {
-        UrlExpanderTask(this).execute(mSong)
+        val songFile = MashUpApplication.getPreferences().getDownloadedFile(mSong)
+        if( songFile.isEmpty()  ) {
+            UrlExpanderTask(this).execute(mSong)
+        }
+        else {
+            mSong.expandedUrl = songFile
+            initializeFromFile(File( songFile ))
+        }
+
     }
 
     @SuppressLint("InlinedApi")
