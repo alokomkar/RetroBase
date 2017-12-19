@@ -45,4 +45,15 @@ class MashUpPreferences(context: Context ) {
 
     inner class FavoritesList( var key : String = "favorites", var songsList: ArrayList<Songs> = ArrayList())
 
+    fun toggleFavorite(itemAtPosition: Songs) {
+        val favorites = getFavorites()
+        if( favorites.contains(itemAtPosition) ) {
+            favorites.remove(itemAtPosition)
+        }
+        else {
+            favorites.add(itemAtPosition)
+        }
+        mSharedPreferences.edit().putString("favorites", Gson().toJson(FavoritesList("favorites", favorites)).toString()).apply()
+    }
+
 }

@@ -6,13 +6,27 @@
     android:background="@color/primaryBackground"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="@dimen/margin_song_image"
-        android:layout_height="@dimen/margin_song_image"
-        android:layout_margin="@dimen/default_margin"
-        android:contentDescription="@string/song"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/songsImageView"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/songImageLayout">
+        <ImageView
+            android:layout_width="@dimen/margin_song_image"
+            android:layout_height="@dimen/margin_song_image"
+            android:layout_margin="@dimen/default_margin"
+            android:contentDescription="@string/song"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/songsImageView"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/favoriteImageView"
+            android:paddingLeft="@dimen/default_mini_padding"
+            android:paddingTop="@dimen/default_mini_padding"
+            android:src="@android:drawable/star_big_off"
+            android:paddingStart="@dimen/default_mini_padding" />
+    </FrameLayout>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -25,8 +39,8 @@
         android:id="@+id/titleTextView"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_toRightOf="@+id/songsImageView"
-        android:layout_toEndOf="@+id/songsImageView"
+        android:layout_toRightOf="@+id/songImageLayout"
+        android:layout_toEndOf="@+id/songImageLayout"
         android:layout_marginEnd="@dimen/default_margin" />
 
     <TextView
@@ -40,8 +54,8 @@
         android:layout_toLeftOf="@+id/actionsLayout"
         android:layout_toStartOf="@+id/actionsLayout"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_toRightOf="@+id/songsImageView"
-        android:layout_toEndOf="@+id/songsImageView"
+        android:layout_toRightOf="@+id/songImageLayout"
+        android:layout_toEndOf="@+id/songImageLayout"
         android:layout_marginEnd="@dimen/default_margin"
          />
 

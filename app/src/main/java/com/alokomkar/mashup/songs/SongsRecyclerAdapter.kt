@@ -1,6 +1,8 @@
 package com.alokomkar.mashup.songs
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -24,13 +26,16 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     private lateinit var mRequestOptions: RequestOptions
     private var mFilteredList : ArrayList<Songs> = ArrayList(songsList)
     private var mPreferences = MashUpApplication.getPreferences()
+    private lateinit var mStarOn : Drawable
+    private lateinit var mStarOff : Drawable
 
     @SuppressLint("CheckResult")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         mRequestOptions = RequestOptions()
         mRequestOptions.placeholder(R.mipmap.ic_launcher)
         mRequestOptions.fallback(R.mipmap.ic_launcher)
-
+        mStarOn = ContextCompat.getDrawable(parent.context, android.R.drawable.star_big_on)!!
+        mStarOff = ContextCompat.getDrawable(parent.context, android.R.drawable.star_big_off)!!
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_song_list, parent, false))
     }
 
@@ -57,6 +62,10 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
         if( songs.isDownloaded || mPreferences.getDownloadedFile(songs).isNotEmpty() ) {
             holder.downloadImageView.hide()
         }
+
+        if( mPreferences.isFavorite(songs) )
+            holder.favoriteImageView.setImageDrawable(mStarOn)
+        else holder.favoriteImageView.setImageDrawable(mStarOff)
 
 
     }
@@ -94,6 +103,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
         val downloadBar : ProgressBar = itemView.findViewById(R.id.downloadBar)
         val downloadImageView : ImageView = itemView.findViewById(R.id.downloadImageView)
         val playImageView : ImageView = itemView.findViewById(R.id.playImageView)
+        val favoriteImageView : ImageView = itemView.findViewById(R.id.favoriteImageView)
 
         init {
             titleTextView.setOnClickListener(this)
@@ -101,6 +111,7 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
             songsImageView.setOnClickListener(this)
             playImageView.setOnClickListener(this)
             downloadImageView.setOnClickListener(this)
+            favoriteImageView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
@@ -109,6 +120,9 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
                 when( view!!.id ) {
                     R.id.downloadImageView -> {
                         songsView.onSongSelect(position, "download")
+                    }
+                    R.id.favoriteImageView -> {
+                        songsView.onSongSelect(position, "favorite")
                     }
                     else -> {
                         songsView.onSongSelect(position, "play")

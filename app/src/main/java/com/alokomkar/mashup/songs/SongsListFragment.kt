@@ -136,6 +136,10 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
                 else
                     Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
             }
+            "favorite" -> {
+                MashUpApplication.getPreferences().toggleFavorite(mSongsAdapter!!.getItemAtPosition(songIndex))
+                mSongsAdapter!!.notifyDataSetChanged()
+            }
             "download" -> {
                 mSongIndex = songIndex
                 mAction = action
