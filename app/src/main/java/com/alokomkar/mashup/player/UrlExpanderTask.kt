@@ -10,7 +10,7 @@ import java.net.URL
 /**
  * Created by Alok Omkar on 2017-12-19.
  */
-class UrlExpanderTask( val playerView: PlayerView) : AsyncTask<Songs, Void, Songs>() {
+class UrlExpanderTask( private val playerView: PlayerView ) : AsyncTask<Songs, Void, Songs>() {
 
     override fun onCancelled(result: Songs?) {
         super.onCancelled(result)
@@ -39,7 +39,7 @@ class UrlExpanderTask( val playerView: PlayerView) : AsyncTask<Songs, Void, Song
         // open connection
         val httpURLConnection = mediaURL.openConnection(Proxy.NO_PROXY) as HttpURLConnection
         // stop following browser redirect
-        httpURLConnection.setInstanceFollowRedirects(false)
+        httpURLConnection.instanceFollowRedirects = false
         // extract location header containing the actual destination URL
         val expandedURL = httpURLConnection.getHeaderField("Location")
         httpURLConnection.disconnect()

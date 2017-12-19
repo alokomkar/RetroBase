@@ -2,4 +2,5 @@
     <string name="app_name">Mash Up</string>
     <string name="song">Song Image</string>
     <string name="search">Search</string>
+    <string name="interent_required">Internet required</string>
 </resources>

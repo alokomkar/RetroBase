@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
@@ -93,7 +94,10 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     }
 
     override fun onSongSelect(songIndex: Int) {
-        mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+        if( MashUpApplication.instance.isNetworkAvailable() )
+            mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+        else
+            Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
     }
 
     /**
