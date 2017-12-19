@@ -3,4 +3,5 @@
     <string name="song">Song Image</string>
     <string name="search">Search</string>
     <string name="interent_required">Internet required</string>
+    <string name="no_data_available">No data available</string>
 </resources>

@@ -91,6 +91,8 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         songsRecyclerView.layoutManager = LinearLayoutManager(context)
         mSongsAdapter = SongsRecyclerAdapter(songsList, this as SongsView)
         songsRecyclerView.adapter = mSongsAdapter
+        if( mSongsAdapter!!.itemCount == 0 ) emptyTextView.show()
+        else emptyTextView.hide()
     }
 
     override fun onSongSelect(songIndex: Int) {
