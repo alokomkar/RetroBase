@@ -1,7 +1,5 @@
 package com.alokomkar.mashup.songs
 
-import android.app.Service
-import android.hardware.input.InputManager
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -10,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
