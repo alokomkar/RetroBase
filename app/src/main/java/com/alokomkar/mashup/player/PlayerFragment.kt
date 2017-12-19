@@ -87,7 +87,6 @@ class PlayerFragment : BaseFragment(), PlayerView {
                 .apply(mRequestOptions)
                 .into(songsImageView)
 
-        progressLayout.hide()
 
     }
 
