@@ -1,5 +1,7 @@
 package com.alokomkar.mashup.songs
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,6 +18,7 @@ import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.BaseFragment
+import com.alokomkar.mashup.base.handleMultiplePermission
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
 import com.alokomkar.mashup.download.DownloadsPresenter
@@ -119,6 +122,11 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         else emptyTextView.hide()
     }
 
+    private var mSongIndex : Int = -1
+    private var mAction : String = ""
+
+    private val PERMISSIONS_REQUEST: Int = 21
+
     override fun onSongSelect(songIndex: Int, action : String ) {
         when( action ) {
             "play" -> {
@@ -128,13 +136,38 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
                     Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
             }
             "download" -> {
-                if( MashUpApplication.instance.isNetworkAvailable() ) {
-                    mSongsAdapter!!.showProgress(songIndex)
-                    mDownloadPresenter.downloadFile(mSongsAdapter!!.getItemAtPosition(songIndex).url, mSongsAdapter!!.getItemAtPosition(songIndex))
-
+                mSongIndex = songIndex
+                mAction = action
+                val permissionList = arrayListOf<String>(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                if (!handleMultiplePermission(context!!, permissionList)) {
+                    requestPermissions( permissionList.toTypedArray(), PERMISSIONS_REQUEST)
                 }
-                else
-                    Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
+                else {
+
+                    if( MashUpApplication.instance.isNetworkAvailable() ) {
+                        mSongsAdapter!!.showProgress(songIndex)
+                        mDownloadPresenter.downloadFile(mSongsAdapter!!.getItemAtPosition(songIndex).url, mSongsAdapter!!.getItemAtPosition(songIndex))
+
+                    }
+                    else
+                        Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
+
+                    mSongIndex = -1
+                    mAction = ""
+                }
+
+
+            }
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if( requestCode == PERMISSIONS_REQUEST ) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onSongSelect(mSongIndex, mAction)
+            } else if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                Toast.makeText(context, R.string.some_permissions_denied, Toast.LENGTH_SHORT).show()
             }
         }
 
