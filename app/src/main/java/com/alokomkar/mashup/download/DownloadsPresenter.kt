@@ -53,6 +53,9 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
                 bufferedSink.writeAll(response.body()!!.source())
                 bufferedSink.close()
 
+                song.isDownloaded = true
+                song.isDownloading = false
+                songsView.hideDownloadProgress(song)
                 emitter.onNext(destinationFile)
                 emitter.onComplete()
 
@@ -66,7 +69,6 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
     override fun onNext(t: File) {
         val song = Songs()
         song.fileName = t.nameWithoutExtension
-        songsView.hideDownloadProgress(song)
     }
 
     override fun onComplete() {

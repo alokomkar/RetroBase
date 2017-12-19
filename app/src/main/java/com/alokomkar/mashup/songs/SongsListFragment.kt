@@ -138,7 +138,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             "download" -> {
                 mSongIndex = songIndex
                 mAction = action
-                val permissionList = arrayListOf<String>(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                val permissionList = arrayListOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (!handleMultiplePermission(context!!, permissionList)) {
                     requestPermissions( permissionList.toTypedArray(), PERMISSIONS_REQUEST)
                 }

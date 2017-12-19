@@ -128,9 +128,9 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     }
 
     fun hideProgress(song: Songs) {
-        val songIndex = songsList.indexOf(song)
+        /*val songIndex = songsList.indexOf(song)
         songsList[songIndex].isDownloading = false
-        songsList[songIndex].isDownloaded = true
+        songsList[songIndex].isDownloaded = true*/
         notifyDataSetChanged()
     }
 }
