@@ -34,8 +34,6 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource
  */
 class PlayerFragment : BaseFragment(), PlayerView {
 
-
-
     /**
      * Called to have the fragment instantiate its user interface view.
      * This is optional, and non-graphical fragments can return null (which
@@ -96,7 +94,7 @@ class PlayerFragment : BaseFragment(), PlayerView {
         mExoPlayer?.prepare(mediaSource, true, false)
     }
 
-    private fun buildMediaSource(uri: Uri): MediaSource {
+    private fun buildMediaSource(uri: Uri): ExtractorMediaSource {
         return ExtractorMediaSource(uri,
                 DefaultHttpDataSourceFactory("ua"),
                 DefaultExtractorsFactory(), null, null)
@@ -121,7 +119,7 @@ class PlayerFragment : BaseFragment(), PlayerView {
 
     override fun onResume() {
         super.onResume()
-        hideSystemUi()
+        //hideSystemUi()
         if ( mExoPlayer == null ) {
             initializePlayer()
             resolveURL()

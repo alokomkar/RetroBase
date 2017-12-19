@@ -45,14 +45,14 @@ dependencies {
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     //Networking
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.2.0") {
         exclude group: 'com.squareup.retrofit2', module: 'retrofit'
     }
     // RxJava
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     //Media Player
@@ -60,4 +60,9 @@ dependencies {
 
     //Disk cache
     compile 'com.danikula:videocache:2.7.0'
+
+    //Room Architecture
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
 }
