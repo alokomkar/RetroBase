@@ -76,16 +76,6 @@ class PlayerFragment : BaseFragment(), PlayerView {
         mSong = arguments!!.getParcelable(BUNDLE_SONG)
         mSongsList = arguments!!.getParcelableArrayList(BUNDLE_SONGS_LIST)
 
-        val mRequestOptions = RequestOptions()
-        mRequestOptions.placeholder(R.mipmap.ic_launcher)
-        mRequestOptions.fallback(R.mipmap.ic_launcher)
-
-        Glide.with(context)
-                .load(mSong.coverImage)
-                .apply(mRequestOptions)
-                .into(songsImageView)
-
-
     }
 
     private fun initializePlayback(songs: Songs) {

@@ -72,4 +72,18 @@
         android:layout_below="@+id/searchCardView"
         android:id="@+id/songsRecyclerView"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/fab_dimen"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileFAB"
+        app:fabSize="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/fab_dimen"
+        android:layout_marginRight="@dimen/fab_dimen"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_view_headline_white_36dp"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

@@ -4,4 +4,11 @@
     <string name="search">Search</string>
     <string name="interent_required">Internet required</string>
     <string name="no_data_available">No data available</string>
+    <string name="profile">Portfolio</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="shopgro">Shop Gro - Consumer and Retailer versions :\nE commerce app for getting grocery shops online</string>
+    <string name="shopgro_consumer">https://play.google.com/store/apps/details?id=com.shopgro.apps.consumer</string>
+    <string name="shopgro_retailer">https://play.google.com/store/apps/details?id=com.shopgro.apps.retailer</string>
+    <string name="practiceCode">Practice Code : \nLearn to code app for programming aspirants</string>
+    <string name="practice_code">https://play.google.com/store/apps/details?id=com.sortedqueue.programmercreek</string>
 </resources>

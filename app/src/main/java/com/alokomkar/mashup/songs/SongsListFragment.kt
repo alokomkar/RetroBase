@@ -1,13 +1,19 @@
 package com.alokomkar.mashup.songs
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
@@ -68,6 +74,22 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             }
             true
         }
+        profileFAB.setOnClickListener {
+            showProfileDialog()
+        }
+    }
+
+    private fun showProfileDialog() {
+        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.layout_profile, null)
+        val cancelTextView: TextView = dialogView.findViewById(R.id.cancelTextView)
+        val profileDialog: AlertDialog = AlertDialog.Builder(context!!)
+                .setView(dialogView)
+                .create()
+
+        profileDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        profileDialog.show()
+
+        cancelTextView.setOnClickListener { profileDialog.dismiss() }
     }
 
     override fun showProgress(message: String) {

@@ -7,4 +7,5 @@
     <color name="primaryText">#FFFFFF</color>
     <color name="secondaryText">#FF4081</color>
     <color name="primaryBackground">#99000000</color>
+    <color name="divider">#EFEFEF</color>
 </resources>
