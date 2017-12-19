@@ -1,4 +1,4 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.songs
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
@@ -92,12 +93,12 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     private var mSongsList: ArrayList<Songs> ?= null
 
-    private var mSongsAdapter: SongsRecyclerAdapter ?= null
+    private var mSongsAdapter: SongsRecyclerAdapter?= null
 
     override fun onSuccess(songsList: ArrayList<Songs>) {
         mSongsList = songsList
         songsRecyclerView.layoutManager = LinearLayoutManager(context)
-        mSongsAdapter = SongsRecyclerAdapter( songsList, this as SongsView )
+        mSongsAdapter = SongsRecyclerAdapter(songsList, this as SongsView)
         songsRecyclerView.adapter = mSongsAdapter
     }
 

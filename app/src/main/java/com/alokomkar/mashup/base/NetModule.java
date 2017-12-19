@@ -1,9 +1,8 @@
 package com.alokomkar.mashup.base;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.alokomkar.mashup.SongsAPI;
+import com.alokomkar.mashup.songs.SongsAPI;
 import com.google.gson.Gson;
 
 import okhttp3.Cache;

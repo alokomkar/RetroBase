@@ -1,4 +1,4 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.player
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -6,8 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.alokomkar.mashup.base.BUNDLE_SONG
+import com.alokomkar.mashup.base.BUNDLE_SONGS_LIST
+import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
+import com.alokomkar.mashup.base.show
+import com.alokomkar.mashup.songs.Songs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -22,10 +28,11 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 
+
 /**
  * Created by Alok Omkar on 2017-12-16.
  */
-class PlayerFragment : BaseFragment() {
+class PlayerFragment : BaseFragment(), PlayerView {
 
 
 
@@ -68,7 +75,7 @@ class PlayerFragment : BaseFragment() {
     @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mSong = arguments!!.getParcelable<Songs>(BUNDLE_SONG)
+        mSong = arguments!!.getParcelable(BUNDLE_SONG)
         mSongsList = arguments!!.getParcelableArrayList(BUNDLE_SONGS_LIST)
 
         val mRequestOptions = RequestOptions()
@@ -84,8 +91,8 @@ class PlayerFragment : BaseFragment() {
 
     }
 
-    private fun initializePlayback() {
-        val uri = Uri.parse(mSong.url)
+    private fun initializePlayback(songs: Songs) {
+        val uri = Uri.parse(songs.expandedUrl)
         val mediaSource = buildMediaSource(uri)
         mExoPlayer?.prepare(mediaSource, true, false)
     }
@@ -107,7 +114,7 @@ class PlayerFragment : BaseFragment() {
                 DefaultRenderersFactory(context),
                 DefaultTrackSelector(), DefaultLoadControl())
 
-        videoView.setPlayer(mExoPlayer)
+        videoView.player = mExoPlayer
 
         mExoPlayer?.playWhenReady = mPlayWhenReady
         mExoPlayer?.seekTo(mCurrentWindow, mPlaybackPosition)
@@ -118,8 +125,12 @@ class PlayerFragment : BaseFragment() {
         hideSystemUi()
         if ( mExoPlayer == null ) {
             initializePlayer()
-            initializePlayback()
+            resolveURL()
         }
+    }
+
+    private fun resolveURL() {
+        UrlExpanderTask(this).execute(mSong)
     }
 
     @SuppressLint("InlinedApi")
@@ -145,5 +156,21 @@ class PlayerFragment : BaseFragment() {
             mExoPlayer?.release()
             mExoPlayer = null
         }
+    }
+
+    override fun showProgress(message: String) {
+        progressLayout.show()
+    }
+
+    override fun hideProgress() {
+        progressLayout.hide()
+    }
+
+    override fun showError(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSuccess(songs: Songs) {
+        initializePlayback(songs)
     }
 }

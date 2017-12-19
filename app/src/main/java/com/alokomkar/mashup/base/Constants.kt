@@ -1,4 +1,4 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.base
 
 /**
  * Created by Alok Omkar on 2017-12-16.

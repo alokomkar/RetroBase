@@ -1,5 +1,6 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.songs
 
+import com.alokomkar.mashup.MashUpApplication
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
@@ -10,7 +11,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Alok Omkar on 2017-12-16.
  */
-class SongsPresenter(private val songsView : SongsView ) : Observer<ArrayList<Songs>> {
+class SongsPresenter(private val songsView : SongsView) : Observer<ArrayList<Songs>> {
 
     private val mCompositeDisposable : CompositeDisposable = CompositeDisposable()
 

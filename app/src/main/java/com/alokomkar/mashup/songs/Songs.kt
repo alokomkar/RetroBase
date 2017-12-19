@@ -1,4 +1,4 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.songs
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -28,6 +28,8 @@ class Songs(
             source.readString(),
             source.readString()
     )
+
+    var expandedUrl : String = ""
 
     override fun describeContents() = 0
 

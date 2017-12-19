@@ -1,4 +1,4 @@
-package com.alokomkar.mashup;
+package com.alokomkar.mashup.songs;
 
 import java.util.ArrayList;
 

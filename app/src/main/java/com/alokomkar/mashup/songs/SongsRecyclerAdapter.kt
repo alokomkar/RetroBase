@@ -1,4 +1,4 @@
-package com.alokomkar.mashup
+package com.alokomkar.mashup.songs
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.alokomkar.mashup.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -14,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions
  * Created by Alok Omkar on 2017-12-16.
  */
 
-class SongsRecyclerAdapter( val songsList: ArrayList<Songs>, val songsView: SongsView ) : RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
+class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: SongsView) : RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
 
     private lateinit var mRequestOptions: RequestOptions
     private var mFilteredList : ArrayList<Songs> = ArrayList(songsList)

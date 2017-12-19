@@ -2,6 +2,11 @@ package com.alokomkar.mashup
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.alokomkar.mashup.base.BUNDLE_SONG
+import com.alokomkar.mashup.base.BUNDLE_SONGS_LIST
+import com.alokomkar.mashup.player.PlayerFragment
+import com.alokomkar.mashup.songs.Songs
+import com.alokomkar.mashup.songs.SongsListFragment
 
 class MainActivity : AppCompatActivity(), NavigationListener {
 
