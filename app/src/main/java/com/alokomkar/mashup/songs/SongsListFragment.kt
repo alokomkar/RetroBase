@@ -210,6 +210,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     override fun onDownloadSuccess(song: Songs, downloadedFile: File) {
         Toast.makeText(context, "Download complete : " + downloadedFile.absolutePath, Toast.LENGTH_SHORT).show()
         MashUpApplication.getPreferences().addDownloadedFile( song, downloadedFile )
+        mSongsAdapter!!.notifyDataSetChanged()
     }
 
     override fun showDownloadProgress(song: Songs) {
