@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -76,6 +77,12 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         mSongsPresenter = SongsPresenter(this)
         mSongsPresenter.getSongs()
         searchEditText.addTextChangedListener(this)
+        searchEditText.setOnTouchListener { view, event ->
+            if( event!!.action == MotionEvent.ACTION_DOWN )
+                searchEditText.requestFocus()
+            true
+        }
+        searchEditText.clearFocus()
     }
 
     override fun showProgress(message: String) {
