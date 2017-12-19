@@ -1,26 +1,31 @@
 package com.alokomkar.mashup
 
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.MediaPlayer
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
-import com.alokomkar.mashup.base.show
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_player.*
 
+import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.source.ExtractorMediaSource
+
 /**
  * Created by Alok Omkar on 2017-12-16.
  */
-class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
+class PlayerFragment : BaseFragment() {
 
 
 
@@ -50,7 +55,6 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener, MediaPlay
 
     private lateinit var mSong : Songs
     private lateinit var mSongsList : ArrayList<Songs>
-    private lateinit var mMediaPlayer : MediaPlayer
     /**
      * Called immediately after [.onCreateView]
      * has returned, but before any saved state has been restored in to the view.
@@ -61,6 +65,7 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener, MediaPlay
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mSong = arguments!!.getParcelable<Songs>(BUNDLE_SONG)
@@ -76,53 +81,69 @@ class PlayerFragment : BaseFragment(), MediaPlayer.OnPreparedListener, MediaPlay
                 .into(songsImageView)
 
         progressLayout.hide()
-        mMediaPlayer = MediaPlayer()
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-        mMediaPlayer.setDataSource(mSong.url)
-        try {
-            mMediaPlayer.prepare()
-            mMediaPlayer.setOnPreparedListener(this)
-        } catch ( e : Exception ) {
-            e.printStackTrace()
-            progressLayout.hide()
-            Toast.makeText(context, "Error : " + e.localizedMessage, Toast.LENGTH_LONG).show()
-        }
 
-        playPauseImageView.setOnClickListener{
-            if( !mMediaPlayer.isPlaying ) {
-                progressLayout.show()
-                playPauseImageView.setImageDrawable( ContextCompat.getDrawable(context!!, android.R.drawable.ic_media_pause))
-                mMediaPlayer.start()
-            }
-            else {
-                playPauseImageView.setImageDrawable( ContextCompat.getDrawable(context!!, android.R.drawable.ic_media_play))
-                mMediaPlayer.pause()
-            }
-        }
-
-        mMediaPlayer.setOnErrorListener( this )
     }
 
-    override fun onPrepared(mediaPlayer: MediaPlayer?) {
-        progressLayout.hide()
-        mediaPlayer!!.start()
-        playPauseImageView.setImageDrawable( ContextCompat.getDrawable(context!!, android.R.drawable.ic_media_pause))
+    private fun initializePlayback() {
+        val uri = Uri.parse(mSong.url)
+        val mediaSource = buildMediaSource(uri)
+        mExoPlayer?.prepare(mediaSource, true, false)
     }
 
-    /**
-     * Called when the Fragment is no longer resumed.  This is generally
-     * tied to [Activity.onPause] of the containing
-     * Activity's lifecycle.
-     */
+    private fun buildMediaSource(uri: Uri): MediaSource {
+        return ExtractorMediaSource(uri,
+                DefaultHttpDataSourceFactory("ua"),
+                DefaultExtractorsFactory(), null, null)
+    }
+
+    private var mExoPlayer: SimpleExoPlayer ?= null
+    private var mPlayWhenReady: Boolean = true
+    private var mCurrentWindow: Int = 0
+    private var mPlaybackPosition: Long = 0
+
+    private fun initializePlayer() {
+
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                DefaultRenderersFactory(context),
+                DefaultTrackSelector(), DefaultLoadControl())
+
+        videoView.setPlayer(mExoPlayer)
+
+        mExoPlayer?.playWhenReady = mPlayWhenReady
+        mExoPlayer?.seekTo(mCurrentWindow, mPlaybackPosition)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideSystemUi()
+        if ( mExoPlayer == null ) {
+            initializePlayer()
+            initializePlayback()
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    private fun hideSystemUi() {
+        videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
     override fun onPause() {
         super.onPause()
-        if( mMediaPlayer != null && mMediaPlayer!!.isPlaying ) {
-            mMediaPlayer!!.pause()
-        }
+        releasePlayer()
     }
 
-    override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
-        progressLayout.hide()
-        return true
+    private fun releasePlayer() {
+        if (mExoPlayer != null) {
+            mPlaybackPosition = mExoPlayer?.currentPosition!!
+            mCurrentWindow = mExoPlayer?.currentWindowIndex!!
+            mPlayWhenReady = mExoPlayer?.playWhenReady!!
+            mExoPlayer?.release()
+            mExoPlayer = null
+        }
     }
 }
