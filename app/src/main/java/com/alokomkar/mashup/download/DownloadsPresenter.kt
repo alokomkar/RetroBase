@@ -23,6 +23,7 @@ import java.io.IOException
 class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
 
     private val mCompositeDisposable : CompositeDisposable = CompositeDisposable()
+    private val mSongsMap : HashMap<String, Songs> = HashMap()
 
     fun downloadFile( fileUrl : String, song : Songs ) {
         songsView.showDownloadProgress(song)
@@ -50,12 +51,10 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
                 val destinationFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absoluteFile, fileName + ".mp3");
                 val bufferedSink = Okio.buffer(Okio.sink(destinationFile))
 
+                mSongsMap.put(fileName, song)
                 bufferedSink.writeAll(response.body()!!.source())
                 bufferedSink.close()
 
-                song.isDownloaded = true
-                song.isDownloading = false
-                songsView.hideDownloadProgress(song)
                 emitter.onNext(destinationFile)
                 emitter.onComplete()
 
@@ -67,8 +66,7 @@ class DownloadsPresenter( private val songsView : SongsView ) : Observer<File> {
     }
 
     override fun onNext(t: File) {
-        val song = Songs()
-        song.fileName = t.nameWithoutExtension
+        songsView.hideDownloadProgress(mSongsMap.get(t.nameWithoutExtension)!!)
     }
 
     override fun onComplete() {
