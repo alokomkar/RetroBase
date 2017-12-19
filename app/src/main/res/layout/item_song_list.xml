@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/primaryBackground"
@@ -19,6 +20,8 @@
         android:textColor="@color/primaryText"
         android:textSize="@dimen/title_size"
         android:text="@string/app_name"
+        android:layout_toLeftOf="@+id/actionsLayout"
+        android:layout_toStartOf="@+id/actionsLayout"
         android:id="@+id/titleTextView"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
@@ -34,10 +37,50 @@
         android:textSize="@dimen/secondary_title_size"
         android:id="@+id/artistTextView"
         android:layout_below="@+id/titleTextView"
+        android:layout_toLeftOf="@+id/actionsLayout"
+        android:layout_toStartOf="@+id/actionsLayout"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_toRightOf="@+id/songsImageView"
         android:layout_toEndOf="@+id/songsImageView"
-        android:layout_marginEnd="@dimen/default_margin" />
+        android:layout_marginEnd="@dimen/default_margin"
+         />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actionsLayout"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/default_big_margin"
+            android:layout_height="@dimen/default_big_margin"
+            app:srcCompat="@drawable/ic_play_circle_outline"
+            android:layout_margin="@dimen/default_margin"
+            android:id="@+id/playImageView"/>
+
+        <ImageView
+            android:layout_width="@dimen/default_big_margin"
+            android:layout_height="@dimen/default_big_margin"
+            android:layout_margin="@dimen/default_margin"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_file_download_purple_200_36dp"
+            android:id="@+id/downloadImageView"/>
+
+        <ProgressBar
+            android:layout_width="@dimen/default_big_margin"
+            android:layout_height="@dimen/default_big_margin"
+            android:layout_margin="@dimen/default_margin"
+            android:visibility="visible"
+            android:id="@+id/downloadBar"
+            android:padding="@dimen/default_margin" />
+
+    </LinearLayout>
+
+
 
     <View
         android:layout_below="@+id/songsImageView"

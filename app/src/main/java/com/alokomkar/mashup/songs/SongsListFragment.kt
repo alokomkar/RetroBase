@@ -5,14 +5,12 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
@@ -20,15 +18,18 @@ import com.alokomkar.mashup.R
 import com.alokomkar.mashup.base.BaseFragment
 import com.alokomkar.mashup.base.hide
 import com.alokomkar.mashup.base.show
+import com.alokomkar.mashup.download.DownloadsPresenter
 import kotlinx.android.synthetic.main.fragment_songs_list.*
+import java.io.File
 
 /**
  * Created by Alok Omkar on 2017-12-16.
  */
 class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
-    private lateinit var mSongsPresenter : SongsPresenter
 
+    private lateinit var mSongsPresenter : SongsPresenter
+    private lateinit var mDownloadPresenter : DownloadsPresenter
     /**
      * Called to have the fragment instantiate its user interface view.
      * This is optional, and non-graphical fragments can return null (which
@@ -66,9 +67,10 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mSongsPresenter = SongsPresenter(this)
+        mDownloadPresenter = DownloadsPresenter( this )
         mSongsPresenter.getSongs()
         searchEditText.addTextChangedListener(this)
-        searchEditText.setOnTouchListener { view, event ->
+        searchEditText.setOnTouchListener { _, event ->
             if( event!!.action == MotionEvent.ACTION_UP ) {
                 searchEditText.requestFocus()
             }
@@ -117,11 +119,24 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         else emptyTextView.hide()
     }
 
-    override fun onSongSelect(songIndex: Int) {
-        if( MashUpApplication.instance.isNetworkAvailable() )
-            mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
-        else
-            Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
+    override fun onSongSelect(songIndex: Int, action : String ) {
+        when( action ) {
+            "play" -> {
+                if( MashUpApplication.instance.isNetworkAvailable() )
+                    mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+                else
+                    Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
+            }
+            "download" -> {
+                if( MashUpApplication.instance.isNetworkAvailable() ) {
+                    mSongsAdapter!!.showProgress(songIndex)
+
+                }
+                else
+                    Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     /**
@@ -136,6 +151,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     override fun onDestroyView() {
         super.onDestroyView()
         mSongsPresenter.onDestroy()
+        mDownloadPresenter.onDestroy()
     }
 
     override fun afterTextChanged(p0: Editable?) {
@@ -152,6 +168,18 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+    }
+
+    override fun onDownloadSuccess(fileUrl: String, downloadedFile: File) {
+        Toast.makeText(context, "Download complete : " + downloadedFile.absolutePath, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showDownloadProgress(fileUrl: String) {
+
+    }
+
+    override fun hideDownloadProgress(fileUrl: String) {
 
     }
 }

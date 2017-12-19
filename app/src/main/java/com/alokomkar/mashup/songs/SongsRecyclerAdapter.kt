@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.alokomkar.mashup.R
+import com.alokomkar.mashup.base.hide
+import com.alokomkar.mashup.base.show
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -30,13 +33,19 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val songs = getItemAtPosition(position)
+
         holder.titleTextView.text = songs.song
         holder.artistTextView.text = songs.artists
         Glide.with(holder.itemView.context)
                 .load(songs.coverImage)
                 .apply(mRequestOptions)
                 .into(holder.songsImageView)
+
+        if( songs.isDownloading ) holder.downloadBar.show()
+        else holder.downloadBar.hide()
+
     }
 
     fun getItemAtPosition( position: Int ) : Songs {
@@ -67,17 +76,36 @@ class SongsRecyclerAdapter(val songsList: ArrayList<Songs>, val songsView: Songs
         override fun onClick(view: View?) {
             val position = adapterPosition
             if( position != RecyclerView.NO_POSITION ) {
-                songsView.onSongSelect(position)
+                when( itemView.id ) {
+                    R.id.downloadImageView -> {
+                        songsView.onSongSelect(position, "download")
+                    }
+                    else -> {
+                        songsView.onSongSelect(position, "play")
+                    }
+                }
             }
         }
 
         val titleTextView : TextView = itemView.findViewById(R.id.titleTextView)
         val artistTextView : TextView = itemView.findViewById(R.id.artistTextView)
         val songsImageView : ImageView = itemView.findViewById(R.id.songsImageView)
+        val downloadBar : ProgressBar = itemView.findViewById(R.id.downloadBar)
+        val downloadImageView : ImageView = itemView.findViewById(R.id.downloadImageView)
+        val playImageView : ImageView = itemView.findViewById(R.id.playImageView)
 
         init {
-            itemView.setOnClickListener(this)
+            titleTextView.setOnClickListener(this)
+            artistTextView.setOnClickListener(this)
+            songsImageView.setOnClickListener(this)
+            playImageView.setOnClickListener(this)
+            downloadImageView.setOnClickListener(this)
         }
 
+    }
+
+    fun showProgress(songIndex: Int) {
+        songsList[songIndex].isDownloading = true
+        notifyDataSetChanged()
     }
 }

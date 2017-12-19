@@ -7,9 +7,7 @@ import com.alokomkar.mashup.base.NetModule
 import com.alokomkar.mashup.songs.SongsAPI
 import com.danikula.videocache.HttpProxyCacheServer
 import android.net.ConnectivityManager
-
-
-
+import com.alokomkar.mashup.download.DownloadFileAPI
 
 
 /**
@@ -49,6 +47,12 @@ class MashUpApplication : Application() {
         fun getSongsApI() : SongsAPI? {
             if( songsAPI == null ) songsAPI = NetModule(instance).songsAPI
             return songsAPI
+        }
+
+        var downloadFileAPI: DownloadFileAPI?= null
+        fun getDownloadFileApi() : DownloadFileAPI? {
+            if( downloadFileAPI == null ) downloadFileAPI = NetModule(instance).downloadFileAPI
+            return downloadFileAPI
         }
 
         lateinit var instance: MashUpApplication

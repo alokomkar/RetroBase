@@ -62,8 +62,8 @@ dependencies {
     //Disk cache
     compile 'com.danikula:videocache:2.7.0'
 
-    //Room Architecture
+    /*//Room Architecture
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"*/
 }

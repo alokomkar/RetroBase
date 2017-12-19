@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.alokomkar.mashup.MashUpApplication;
+import com.alokomkar.mashup.download.DownloadFileAPI;
 import com.alokomkar.mashup.songs.SongsAPI;
 import com.google.gson.Gson;
 
@@ -106,5 +107,7 @@ public class NetModule {
         return getRetrofit().create(SongsAPI.class);
     }
 
-
+    public DownloadFileAPI getDownloadFileAPI() {
+        return getRetrofit().create(DownloadFileAPI.class);
+    }
 }

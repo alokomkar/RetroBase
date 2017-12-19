@@ -30,6 +30,7 @@ class Songs(
     )
 
     var expandedUrl : String = ""
+    var isDownloading : Boolean = false
 
     override fun describeContents() = 0
 
@@ -40,6 +41,21 @@ class Songs(
         writeString(coverImage)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Songs
+
+        if (song != other.song) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return song.hashCode()
+    }
+
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Songs> = object : Parcelable.Creator<Songs> {
@@ -47,4 +63,6 @@ class Songs(
             override fun newArray(size: Int): Array<Songs?> = arrayOfNulls(size)
         }
     }
+
+
 }
