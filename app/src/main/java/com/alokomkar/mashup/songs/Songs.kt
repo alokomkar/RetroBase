@@ -49,13 +49,13 @@ class Songs(
 
         other as Songs
 
-        if (fileName != other.fileName) return false
+        if (song.replace("\\s".toRegex(), "_") != other.song.replace("\\s".toRegex(), "_")) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return fileName.hashCode()
+        return song.replace("\\s".toRegex(), "_").hashCode()
     }
 
     companion object {
