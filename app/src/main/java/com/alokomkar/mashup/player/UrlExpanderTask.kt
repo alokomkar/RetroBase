@@ -1,6 +1,7 @@
 package com.alokomkar.mashup.player
 
 import android.os.AsyncTask
+import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.songs.Songs
 import java.net.HttpURLConnection
 import java.net.Proxy
@@ -42,7 +43,8 @@ class UrlExpanderTask( val playerView: PlayerView) : AsyncTask<Songs, Void, Song
         // extract location header containing the actual destination URL
         val expandedURL = httpURLConnection.getHeaderField("Location")
         httpURLConnection.disconnect()
-        songs[0]!!.expandedUrl = expandedURL
+        val proxyURL = MashUpApplication.instance.getProxy().getProxyUrl(expandedURL)
+        songs[0]!!.expandedUrl = proxyURL
         return songs[0]!!
     }
 
