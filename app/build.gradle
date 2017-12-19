@@ -57,4 +57,7 @@ dependencies {
 
     //Media Player
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
+
+    //Disk cache
+    compile 'com.danikula:videocache:2.7.0'
 }
