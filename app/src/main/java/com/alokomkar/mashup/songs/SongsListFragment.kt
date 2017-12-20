@@ -90,6 +90,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             Toast.makeText(context, R.string.refreshing_feed, Toast.LENGTH_LONG).show()
             mSongsPresenter.getSongs()
         }
+        playerContainer.hide()
     }
 
     private fun showProfileDialog() {
@@ -143,7 +144,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             "play" -> {
                 if( MashUpApplication.instance.isNetworkAvailable() ) {
                     //mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
-                    loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+                    loadPlayerFragment(mSongsList!![songIndex], mSongsList!!, true)
                 }
                 else
                     Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
@@ -180,13 +181,15 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     }
 
-    private fun loadPlayerFragment(selectedSong: Songs, allSongs: ArrayList<Songs>) {
+    private fun loadPlayerFragment(selectedSong: Songs, allSongs: ArrayList<Songs>, autoPlay : Boolean ) {
+        playerContainer.show()
         val fragmentTransaction = childFragmentManager.beginTransaction()
         fragmentTransaction.addToBackStack(null)
         val playerFragment = PlayerFragment()
         val bundle = Bundle()
         bundle.putParcelable(BUNDLE_SONG, selectedSong)
         bundle.putParcelableArrayList(BUNDLE_SONGS_LIST, allSongs)
+        bundle.putBoolean(AUTO_PLAY, autoPlay)
         playerFragment.arguments = bundle
         fragmentTransaction.replace(R.id.playerContainer, playerFragment).commit()
     }

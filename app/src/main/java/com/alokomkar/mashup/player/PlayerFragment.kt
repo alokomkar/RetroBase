@@ -8,12 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
-import com.alokomkar.mashup.base.BUNDLE_SONG
-import com.alokomkar.mashup.base.BUNDLE_SONGS_LIST
 import com.alokomkar.mashup.R
-import com.alokomkar.mashup.base.BaseFragment
-import com.alokomkar.mashup.base.hide
-import com.alokomkar.mashup.base.show
+import com.alokomkar.mashup.base.*
 import com.alokomkar.mashup.songs.Songs
 import kotlinx.android.synthetic.main.fragment_player.*
 
@@ -78,7 +74,7 @@ class PlayerFragment : BaseFragment(), PlayerView {
         super.onViewCreated(view, savedInstanceState)
         mSong = arguments!!.getParcelable(BUNDLE_SONG)
         mSongsList = arguments!!.getParcelableArrayList(BUNDLE_SONGS_LIST)
-
+        mPlayWhenReady = arguments!!.getBoolean(AUTO_PLAY, false)
     }
 
     private fun initializePlayback(songs: Songs) {
@@ -107,17 +103,15 @@ class PlayerFragment : BaseFragment(), PlayerView {
     }
 
     private var mExoPlayer: SimpleExoPlayer ?= null
-    private var mPlayWhenReady: Boolean = true
+    private var mPlayWhenReady: Boolean = false
     private var mCurrentWindow: Int = 0
     private var mPlaybackPosition: Long = 0
 
     private fun initializePlayer() {
-
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 DefaultRenderersFactory(context),
                 DefaultTrackSelector(), DefaultLoadControl())
         videoView.player = mExoPlayer
-
         mExoPlayer?.playWhenReady = mPlayWhenReady
         mExoPlayer?.seekTo(mCurrentWindow, mPlaybackPosition)
     }
