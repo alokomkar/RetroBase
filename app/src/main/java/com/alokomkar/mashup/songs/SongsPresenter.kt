@@ -15,8 +15,12 @@ class SongsPresenter(private val songsView : SongsView) : Observer<ArrayList<Son
 
     private val mCompositeDisposable : CompositeDisposable = CompositeDisposable()
 
-    fun getSongs() {
+    init {
         songsView.showProgress("Loading")
+    }
+
+    fun getSongs() {
+
 
         if( !MashUpApplication.instance.isNetworkAvailable() ) {
             songsView.showError("Offline Mode - App behaviour may change")

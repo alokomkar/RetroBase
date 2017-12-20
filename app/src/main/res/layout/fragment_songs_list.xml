@@ -65,12 +65,19 @@
         android:layout_centerInParent="true"
         android:text="@string/no_data_available"/>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@+id/searchCardView"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchCardView"
         android:id="@+id/songsRecyclerView"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

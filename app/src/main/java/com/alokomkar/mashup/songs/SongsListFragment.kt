@@ -72,6 +72,8 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         super.onViewCreated(view, savedInstanceState)
         mSongsPresenter = SongsPresenter(this)
         mDownloadPresenter = DownloadsPresenter( this )
+
+
         mSongsPresenter.getSongs()
         searchEditText.addTextChangedListener(this)
         searchEditText.setOnTouchListener { _, event ->
@@ -82,6 +84,13 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
         }
         profileFAB.setOnClickListener {
             showProfileDialog()
+        }
+
+        swipeRefreshLayout.isRefreshing = false
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            Toast.makeText(context, R.string.refreshing_feed, Toast.LENGTH_LONG).show()
+            mSongsPresenter.getSongs()
         }
     }
 
@@ -100,10 +109,12 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
 
     override fun showProgress(message: String) {
         progressLayout.show()
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun hideProgress() {
         progressLayout.hide()
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showError(error: String) {
@@ -115,6 +126,7 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     private var mSongsAdapter: SongsRecyclerAdapter?= null
 
     override fun onSuccess(songsList: ArrayList<Songs>) {
+        swipeRefreshLayout.isRefreshing = false
         mSongsList = songsList
         songsRecyclerView.layoutManager = LinearLayoutManager(context)
         mSongsAdapter = SongsRecyclerAdapter(songsList, this as SongsView)

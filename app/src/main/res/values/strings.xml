@@ -79,5 +79,6 @@
     <string name="permission_write_ext_storage_explanation">Application needs WRITE_EXTERNAL_STORAGE_PERMISSION in order to write into disk memory. Please allow permission.</string>
     <string name="permission_write_ext_storage_denied">Please enable WRITE_EXTERNAL_STORAGE_PERMISSION. Go to \nSettings -> Apps -> Permission</string>
     <string name="some_permissions_denied">Some Permissions were denied</string>
+    <string name="refreshing_feed">Refreshing Feed</string>
 
 </resources>
