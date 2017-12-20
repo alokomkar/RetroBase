@@ -17,12 +17,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.alokomkar.mashup.MashUpApplication
 import com.alokomkar.mashup.R
-import com.alokomkar.mashup.base.BaseFragment
-import com.alokomkar.mashup.base.handleMultiplePermission
-import com.alokomkar.mashup.base.hide
-import com.alokomkar.mashup.base.show
+import com.alokomkar.mashup.base.*
 import com.alokomkar.mashup.download.DownloadFileTask
 import com.alokomkar.mashup.download.DownloadsPresenter
+import com.alokomkar.mashup.player.PlayerFragment
 import kotlinx.android.synthetic.main.fragment_songs_list.*
 import java.io.File
 
@@ -143,8 +141,10 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
     override fun onSongSelect(songIndex: Int, action : String ) {
         when( action ) {
             "play" -> {
-                if( MashUpApplication.instance.isNetworkAvailable() )
-                    mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+                if( MashUpApplication.instance.isNetworkAvailable() ) {
+                    //mNavigationListener.loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+                    loadPlayerFragment(mSongsList!![songIndex], mSongsList!!)
+                }
                 else
                     Toast.makeText(context, R.string.interent_required, Toast.LENGTH_SHORT).show()
             }
@@ -178,6 +178,17 @@ class SongsListFragment : BaseFragment(), SongsView, TextWatcher {
             }
         }
 
+    }
+
+    private fun loadPlayerFragment(selectedSong: Songs, allSongs: ArrayList<Songs>) {
+        val fragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.addToBackStack(null)
+        val playerFragment = PlayerFragment()
+        val bundle = Bundle()
+        bundle.putParcelable(BUNDLE_SONG, selectedSong)
+        bundle.putParcelableArrayList(BUNDLE_SONGS_LIST, allSongs)
+        playerFragment.arguments = bundle
+        fragmentTransaction.replace(R.id.playerContainer, playerFragment).commit()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

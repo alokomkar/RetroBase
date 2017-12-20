@@ -17,6 +17,14 @@
             android:layout_gravity="center"/>
     </FrameLayout>
 
+    <com.alokomkar.mashup.widgets.AudioVisualizer
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:id="@+id/visualizer"
+        android:visibility="gone"
+        android:background="@color/primaryBackground"
+        android:layout_height="@dimen/visualizer_height" />
+
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/videoView"
         android:layout_above="@+id/controlsLayout"

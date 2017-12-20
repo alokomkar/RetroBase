@@ -13,4 +13,5 @@
     <dimen name="text_14">14sp</dimen>
     <dimen name="progress_bar">24dp</dimen>
     <dimen name="default_big_margin">32dp</dimen>
+    <dimen name="visualizer_height">150dp</dimen>
 </resources>
